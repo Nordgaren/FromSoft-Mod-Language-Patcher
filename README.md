@@ -13,3 +13,11 @@ https://github.com/Nordgaren
 ### Instructions
 
 Drag EXE into English folder of the game you are trying to patch and run the EXE. Hit yes.
+
+### Thank You
+
+NamelessHoodie for literally teaching me the basics of how to use SoulsFormats
+TKGP for making SoulsFormats
+thefifthmatt for suggestions
+Meowmaritus also suggestions
+Also Dropoff probably suggestions
