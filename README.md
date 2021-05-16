@@ -21,7 +21,7 @@ I would recommend restoring backups if you made a spelling error and corrected i
 NamelessHoodie for literally teaching me the basics of how to use SoulsFormats  
 TKGP for making SoulsFormats  
 thefifthmatt for suggestions  
-Meowmaritus :fatcat:
+Meowmaritus :fatcat:  
 Also Dropoff probably suggestions  
 
 ### Patch Notes
