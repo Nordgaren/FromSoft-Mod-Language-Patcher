@@ -14,7 +14,6 @@ https://github.com/Nordgaren
 ### Instructions
 
 Drag EXE into English folder of the game you are trying to patch and run the EXE. Hit yes.
-If you fixed any spelling errors in your English language files AFTER you've patched the other languages, restore the other langauge files back to vanilla before running this again.
 
 ### Thank You
 
