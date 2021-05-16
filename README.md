@@ -13,14 +13,15 @@ https://github.com/Nordgaren
 
 ### Instructions
 
-Drag EXE into English folder of the game you are trying to patch and run the EXE. Hit yes.
+Drag EXE into English folder of the game you are trying to patch and run the EXE. Hit yes.  
+I would recommend restoring backups if you made a spelling error and corrected it after using this tool.
 
 ### Thank You
 
 NamelessHoodie for literally teaching me the basics of how to use SoulsFormats  
 TKGP for making SoulsFormats  
 thefifthmatt for suggestions  
-Meowmaritus also suggestions  
+Meowmaritus :fatcat:  
 Also Dropoff probably suggestions  
 
 ### Patch Notes
