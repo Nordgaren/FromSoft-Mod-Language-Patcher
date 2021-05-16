@@ -22,3 +22,7 @@ TKGP for making SoulsFormats
 thefifthmatt for suggestions  
 Meowmaritus also suggestions  
 Also Dropoff probably suggestions  
+
+### Patch Notes
+## V 1.1
+* added restore backups feature
