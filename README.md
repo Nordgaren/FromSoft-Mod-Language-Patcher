@@ -6,7 +6,7 @@ This is a tool that patches the languages for FromSoft mods.
 ### Dark Souls: Remastered
 ### Dark Souls III
 
-If you would like to help me test any other FromSoft game that isn't on the list, please contact me through GitHub
+If you would like to help me test any other FromSoft game that isn't on the list, please contact me through GitHub  
 https://github.com/Nordgaren
 
 
@@ -16,8 +16,8 @@ Drag EXE into English folder of the game you are trying to patch and run the EXE
 
 ### Thank You
 
-NamelessHoodie for literally teaching me the basics of how to use SoulsFormats
-TKGP for making SoulsFormats
-thefifthmatt for suggestions
-Meowmaritus also suggestions
-Also Dropoff probably suggestions
+NamelessHoodie for literally teaching me the basics of how to use SoulsFormats  
+TKGP for making SoulsFormats  
+thefifthmatt for suggestions  
+Meowmaritus also suggestions  
+Also Dropoff probably suggestions  
