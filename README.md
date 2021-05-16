@@ -1,10 +1,11 @@
 # FromSoft Mod Language Patcher by Nordgaren
-This is a tool that patches the languages for FromSoft mods.
+This is a tool that patches the languages for FromSoft mods.  
+It uses SoulsFormats by JK Anderson  
 
 ## Current know compatability: 
-### Dark Souls: Prepare To Die Edition
-### Dark Souls: Remastered
-### Dark Souls III
+* Dark Souls: Prepare To Die Edition
+* Dark Souls: Remastered
+* Dark Souls III
 
 If you would like to help me test any other FromSoft game that isn't on the list, please contact me through GitHub  
 https://github.com/Nordgaren
