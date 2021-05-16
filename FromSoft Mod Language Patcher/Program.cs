@@ -7,6 +7,9 @@ namespace FromSoft_Mod_Language_Patcher
 {
     class Program
     {
+
+        public static bool restoreBackups = false;
+
         static void Main(string[] args)
         {
 
@@ -22,11 +25,18 @@ namespace FromSoft_Mod_Language_Patcher
 
             if (Confirm("Would you like to patch the other language files?"))
             {
-                //Check which method needs to be called
-                if (BND3.Is(Directory.GetCurrentDirectory() + "\\" + Path.GetFileName(destFilePath[0])))
-                    Patcher.Patch.BND3Patch(sourceLangDir, sourceLang, destLangPath, destFilePath);
+
+                if (RestoreBackups("Would you like to restore backups, first?"))
+                {
+                    restoreBackups = true;
+                    RunPatcher(sourceLangDir, sourceLang, destLangPath, destFilePath);
+                }
                 else
-                    Patcher.Patch.BND4Patch(sourceLangDir, sourceLang, destLangPath, destFilePath);
+                {
+                    restoreBackups = false;
+                    RunPatcher(sourceLangDir, sourceLang, destLangPath, destFilePath);
+                }
+
             }
             else
             {
@@ -35,6 +45,15 @@ namespace FromSoft_Mod_Language_Patcher
             }
 
             Console.ReadLine();
+        }
+
+        public static void RunPatcher(string sourceLangDir, string sourceLang,string[] destLangPath,string[] destFilePath)
+        {
+            //Check which method needs to be called
+            if (BND3.Is(Directory.GetCurrentDirectory() + "\\" + Path.GetFileName(destFilePath[0])))
+                Patcher.Patch.BND3Patch(sourceLangDir, sourceLang, destLangPath, destFilePath);
+            else
+                Patcher.Patch.BND4Patch(sourceLangDir, sourceLang, destLangPath, destFilePath);
         }
 
         public static void StartUp(string sourceLang)
@@ -49,6 +68,22 @@ namespace FromSoft_Mod_Language_Patcher
         }
 
         public static bool Confirm(string title)
+        {
+            ConsoleKey response;
+            do
+            {
+                Console.Write($"{ title } [y/n] ");
+                response = Console.ReadKey(false).Key;
+                if (response != ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                }
+            } while (response != ConsoleKey.Y && response != ConsoleKey.N);
+
+            return (response == ConsoleKey.Y);
+        }
+
+        public static bool RestoreBackups(string title)
         {
             ConsoleKey response;
             do

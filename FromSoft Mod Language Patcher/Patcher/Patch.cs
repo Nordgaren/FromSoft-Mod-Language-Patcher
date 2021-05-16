@@ -18,15 +18,26 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
 
             Console.WriteLine("Patching...");
 
-            foreach (var lang in destLangPath)//Patch each file in files Array
+            foreach (var lang in destLangPath)
             {
-                //Make Backups
-                MakeBackups(lang, destFilePath);
+                if (Program.restoreBackups)
+                {
+                    //Restore Backups
+                    RestoreBackups(lang, destFilePath);
+                }
+                else
+                {
+                    Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
+                    //Make Backups
+                    MakeBackups(lang, destFilePath);
+                }
+
 
                 Console.WriteLine("Patching " + new DirectoryInfo(lang).Name);
 
-                foreach (var file in destFilePath)
+                foreach (var file in destFilePath)//Patch each file in files Array
                 {
+
                     //Set source BND files
                     string sourceLangFiles = sourceLangDir + "\\" + Path.GetFileName(file);
                     BND3 sourceBND = BND3.Read(sourceLangFiles);
@@ -88,13 +99,24 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
 
             foreach (var lang in destLangPath)
             {
-                //Make Backups
-                MakeBackups(lang ,destFilePath);
+                if (Program.restoreBackups)
+                {
+                    //Restore Backups
+                    RestoreBackups(lang, destFilePath);
+                }
+                else
+                {
+                    Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
+                    //Make Backups
+                    MakeBackups(lang, destFilePath);
+                }
+
 
                 Console.WriteLine("Patching " + new DirectoryInfo(lang).Name);
 
                 foreach (var file in destFilePath)//Patch each file in files Array
                 {
+
                     //Set source BND files
                     string sourceLangFiles = sourceLangDir + "\\" + Path.GetFileName(file);
                     BND4 sourceBND = BND4.Read(sourceLangFiles);
@@ -284,16 +306,41 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
             //Make Backups
             foreach (var thing in destFilePath)
             {
-                if (!File.Exists(thing + ".bak"))
+                if (!File.Exists(lang + "\\" + Path.GetFileName(thing) + ".bak"))
                 {
-                    Console.WriteLine("Backing Up " + new DirectoryInfo(lang).Name);
-                    foreach (var file in destFilePath)
-                    {
-                        if (!File.Exists(file + ".bak"))
-                            File.Copy(file, file + ".bak");
-                    }
+                    if (!File.Exists(lang + "\\" + Path.GetFileName(thing) + ".bak"))
+                        File.Copy(lang + "\\" + Path.GetFileName(thing), lang + "\\" + Path.GetFileName(thing) + ".bak");
                 }
             }
+        }
+
+        public static void RestoreBackups(string lang, string[] destFilePath)
+        {
+            //Make Backups
+            Console.WriteLine("Attempting to restore backups " + new DirectoryInfo(lang).Name);
+            int backupsRestored = 0;
+
+            foreach (var thing in destFilePath)
+            {
+                if (File.Exists(lang + "\\" + Path.GetFileName(thing) + ".bak"))
+                {
+                    File.Copy(lang + "\\" + Path.GetFileName(thing) + ".bak", lang + "\\" + Path.GetFileName(thing), true);
+                    backupsRestored++;
+                }
+            }
+
+            if (backupsRestored > 0)
+            {
+                Console.WriteLine(backupsRestored + " Backups restored");
+
+            }
+            else
+            {
+                Console.WriteLine("Backups not present");
+                Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
+                MakeBackups(lang, destFilePath);
+            }
+
         }
 
         /* Emperimental and broken file distributor
