@@ -2,7 +2,7 @@
 This is a tool that patches the languages for FromSoft mods. 
 Moves all new entries from English FMG files to other languages.
 Will also overwrite all changed entries with a reference file, provided by you (vanilla version of the BND you changed)
-If don't provide a reference file, the program will overwirte all nulls and tell you how many changed (so any nulls that's ere changed to use in the mod WILL get changed)
+If don't provide a reference file, the program will overwrite all nulls and tell you how many changed (so any nulls that's ere changed to use in the mod WILL get changed)
 It uses SoulsFormats by JK Anderson  
 
 ## Current know compatability: 
@@ -18,7 +18,7 @@ https://github.com/Nordgaren
 
 1) Drag EXE into English folder of the game you are trying to patch.
 
-(optional)If you'd like to update existing entries, make a folder named ref inside the fodler with the EXE and add the VANILLA English folder of your game to the ref folder (I.E. ref/ENGLISH for DS1 and ref/engus for DS3)  
+(optional)If you'd like to update existing entries, make a folder named ref inside the foler with the EXE and add the VANILLA English folder of your game to the ref folder (I.E. ref/ENGLISH for DS1 and ref/engus for DS3)  
 
 Run the EXE. 
 
