@@ -1,7 +1,6 @@
-﻿using SoulsFormats;
-using System;
+﻿using System;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 
 namespace FromSoft_Mod_Language_Patcher
 {
@@ -12,29 +11,23 @@ namespace FromSoft_Mod_Language_Patcher
 
         static void Main(string[] args)
         {
-
             //Get source Directory and Language
             string sourceLangDir = Directory.GetCurrentDirectory();
             string sourceLang = new DirectoryInfo(sourceLangDir).Name;
-
-            //Get Destination languages and filepath
-            var destLangPath = Directory.GetDirectories(Path.GetDirectoryName(sourceLangDir), "*.*", SearchOption.TopDirectoryOnly).Where(d => !d.EndsWith(sourceLang)).ToArray();
-            var destFilePath = Directory.GetFiles(destLangPath[0]).Where(name => !name.EndsWith(".bak")).ToArray();
-
             StartUp(sourceLang);
 
             if (Confirm("Would you like to patch the other language files?"))
             {
 
-                if (RestoreBackups("Would you like to restore backups, first?"))
+                if (Confirm("Would you like to restore backups, first?"))
                 {
                     restoreBackups = true;
-                    RunPatcher(sourceLangDir, sourceLang, destLangPath, destFilePath);
+                    Patcher.Patch(sourceLangDir, sourceLang);
                 }
                 else
                 {
                     restoreBackups = false;
-                    RunPatcher(sourceLangDir, sourceLang, destLangPath, destFilePath);
+                    Patcher.Patch(sourceLangDir, sourceLang);
                 }
 
             }
@@ -43,22 +36,18 @@ namespace FromSoft_Mod_Language_Patcher
                 Console.WriteLine("Closing without patching...");
                 Console.WriteLine("Press ENTER...");
             }
-
             Console.ReadLine();
-        }
-
-        public static void RunPatcher(string sourceLangDir, string sourceLang,string[] destLangPath,string[] destFilePath)
-        {
-            //Check which method needs to be called
-            if (BND3.Is(Directory.GetCurrentDirectory() + "\\" + Path.GetFileName(destFilePath[0])))
-                Patcher.Patch.BND3Patch(sourceLangDir, sourceLang, destLangPath, destFilePath);
-            else
-                Patcher.Patch.BND4Patch(sourceLangDir, sourceLang, destLangPath, destFilePath);
         }
 
         public static void StartUp(string sourceLang)
         {
-            Console.WriteLine("Welcome to FromSoft Mod Language Patcher V1.0 by Nordgaren");
+            //Get version number
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+
+            //Intro text
+            Console.WriteLine("Welcome to FromSoft Mod Language Patcher v" + version + " by Nordgaren");
             Console.WriteLine("Please contact me on GitHub with any bugs!");
             Console.WriteLine("https://github.com/Nordgaren/");
             Console.WriteLine();
@@ -83,20 +72,5 @@ namespace FromSoft_Mod_Language_Patcher
             return (response == ConsoleKey.Y);
         }
 
-        public static bool RestoreBackups(string title)
-        {
-            ConsoleKey response;
-            do
-            {
-                Console.Write($"{ title } [y/n] ");
-                response = Console.ReadKey(false).Key;
-                if (response != ConsoleKey.Enter)
-                {
-                    Console.WriteLine();
-                }
-            } while (response != ConsoleKey.Y && response != ConsoleKey.N);
-
-            return (response == ConsoleKey.Y);
-        }
     }
 }
