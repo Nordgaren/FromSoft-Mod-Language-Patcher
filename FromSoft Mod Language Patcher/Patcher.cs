@@ -48,7 +48,7 @@ namespace FromSoft_Mod_Language_Patcher
                         string sourceLangFiles = sourceLangDir + "\\" + Path.GetFileName(file);
                         BND3 sourceBND = BND3.Read(sourceLangFiles);
                         //Destination for BND files
-                        BND4 destBND = BND4.Read(file);
+                        BND3 destBND = BND3.Read(file);
 
                         //Debug Stuff
                         //Console.WriteLine(sourceBND.Files.Count);
@@ -82,30 +82,31 @@ namespace FromSoft_Mod_Language_Patcher
                     }
 
 
-                    //Experimental file updater for missing FMG files
-                    //if (sourceBND.Files.Count != destBND.Files.Count)
-                    //{
+                    /* Experimental file updater for missing FMG files
+                    if (sourceBND.Files.Count != destBND.Files.Count)
+                    {
 
-                    //    FilePatcherBND4(sourceBND, destBND, destLang);
+                        FilePatcherBND4(sourceBND, destBND, destLang);
 
-                    //    destBND = BND4.Read(destLang);
+                        destBND = BND4.Read(destLang);
 
-                    //    int i = 0;
+                        int i = 0;
 
-                    //    Console.WriteLine(sourceBND.Files.Count);
-                    //    Console.WriteLine(destBND.Files.Count);
+                        Console.WriteLine(sourceBND.Files.Count);
+                        Console.WriteLine(destBND.Files.Count);
 
-                    //    foreach (var item in sourceBND.Files)
-                    //    {
-                    //        Console.WriteLine(item);
-                    //        Console.WriteLine(destBND.Files[i]);
-                    //        Console.ReadLine();
+                        foreach (var item in sourceBND.Files)
+                        {
+                            Console.WriteLine(item);
+                            Console.WriteLine(destBND.Files[i]);
+                            Console.ReadLine();
 
-                    //        if (i < destBND.Files.Count - 1)
-                    //            i++;
-                    //    }
+                            if (i < destBND.Files.Count - 1)
+                                i++;
+                        }
 
-                    //}
+                    }
+                    */
                 }
             }
             //Let user know there are no more files to patch
@@ -124,8 +125,8 @@ namespace FromSoft_Mod_Language_Patcher
                 {
                     FMG sourceFMG = FMG.Read(file.Bytes);
                     FMG destFMG = FMG.Read((destBND.Files[iFile]).Bytes);
-                    //Debug.WriteLine(destBND.Files[iFile].Name);
-                    //Console.WriteLine(file.Name);
+                    //Debug.WriteLine(destBND.Files[iFile].Name); //Debug
+                    //Console.WriteLine(file.Name); //Debug
                     int i = 0;
 
                     foreach (var item in sourceFMG.Entries) //Each entry in the current FMG file
@@ -248,5 +249,5 @@ namespace FromSoft_Mod_Language_Patcher
 
         }
         */
-    }
-}
+                }
+            }

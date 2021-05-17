@@ -16,9 +16,10 @@ namespace FromSoft_Mod_Language_Patcher
             string sourceLang = new DirectoryInfo(sourceLangDir).Name;
             StartUp(sourceLang);
 
+            //Ask if the user would like to actually patch
             if (Confirm("Would you like to patch the other language files?"))
             {
-
+                //Ask if user would like to restore backups
                 if (Confirm("Would you like to restore backups, first?"))
                 {
                     restoreBackups = true;
@@ -29,7 +30,6 @@ namespace FromSoft_Mod_Language_Patcher
                     restoreBackups = false;
                     Patcher.Patch(sourceLangDir, sourceLang);
                 }
-
             }
             else
             {
@@ -52,7 +52,7 @@ namespace FromSoft_Mod_Language_Patcher
             Console.WriteLine("https://github.com/Nordgaren/");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("Your language files WILL be backed up");
+            Console.WriteLine("If this your first time using this program, your language files WILL be backed up");
             Console.WriteLine("Detected source Language: " + sourceLang);
         }
 
