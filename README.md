@@ -24,6 +24,9 @@ thefifthmatt for suggestions
 Meowmaritus :fatcat:  
 Also Dropoff probably suggestions  
 
-### Patch Notes
+### Patch Notes  
+## V 1.2
+* Code optimizations
+* Runs much faster, now
 ## V 1.1
 * added restore backups feature
