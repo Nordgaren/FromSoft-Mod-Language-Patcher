@@ -6,10 +6,8 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
 {
     public class Patch
     {
-
         public static void BND3Patch(string sourceLangDir, string sourceLang, string[] destLangPath, string[] destFilePath)
         {
-
             //Debug Stuff
             //foreach (var lang in destFilePath)
             //{
@@ -75,16 +73,12 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
 
                     //}
                 }
-
             }
-
             Console.WriteLine("Patching completed!");
-
         }
 
         public static void BND4Patch(string sourceLangDir, string sourceLang, string[] destLangPath, string[] destFilePath)
         {
-
             //Debug Stuff
             //foreach (var lang in destFilePath)
             //{
@@ -150,7 +144,6 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
 
                     //}
                 }
-
             }
             //Let user know there are no more files to patch
             Console.WriteLine("Patching completed!");
@@ -173,11 +166,12 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                     //Debug.WriteLine(destBND.Files[iFile].Name);
                     //Console.WriteLine(file.Name);
 
-                    int i = 0;
+                    int i = 0;//Index for the destination FMGs
 
                     foreach (var item in sourceFMG.Entries) //Each entry in the current FMG file
                     {
-                        //Console.WriteLine(item.ID);
+                        //Console.WriteLine(item.ID); 
+                        //Batch up dest entries if there are extras
                         if ((item.ID > destFMG.Entries[i].ID))//Catch the count up if the entries in the destination langauge is out of place (Extra entries that shouldn't be there)
                         {
                             while ((item.ID > destFMG.Entries[i].ID) && (i < destFMG.Entries.Count - 1))
@@ -186,8 +180,8 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                                     i++;
                             }
                         }
-
-                        if (item.ID == destFMG.Entries[i].ID) //Overwrite all Null whitespace or empty entries in destination
+                        //If item IDs match, check if the destination is null, then overwrite
+                        if (item.ID == destFMG.Entries[i].ID)
                         {
                             //Console.WriteLine(item.ID + " = true"); //debug
                             if (string.IsNullOrWhiteSpace(destFMG.Entries[i].Text))
@@ -200,7 +194,7 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                             if (i < destFMG.Entries.Count - 1)
                                 i++;
                         }
-                        else //Add new items
+                        else //Otherwise add new items
                         {
                             destFMG.Entries.Add(item);
                             totalAdded++;
@@ -217,7 +211,6 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                     if (iFile < destBND.Files.Count - 1)
                         iFile++;
                 }
-
             }
             //Print stats for entire BND file
             Console.WriteLine("Patched: " + new DirectoryInfo(Path.GetDirectoryName(destLang)).Name + " " + Path.GetFileName(destLang) + ": " 
@@ -230,7 +223,7 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
             int totalAdded = 0; //Total added per file
             int entriesOverwritten = 0; //Total overwritten per file
 
-            foreach (var file in sourceBND.Files)//For each FMG in the source BND file
+            foreach (var file in sourceBND.Files) //For each FMG in the source BND file
             {
                 if ((Path.GetFileName(file.Name) == (Path.GetFileName(destBND.Files[iFile].Name)))) //If the file names match, update. If not, skip until they do match
                 {
@@ -238,14 +231,13 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                     FMG destFMG = FMG.Read((destBND.Files[iFile]).Bytes);
                     //Debug.WriteLine(destBND.Files[iFile].Name);
                     //Console.WriteLine(file.Name);
-
                     int i = 0;
 
-                    foreach (var item in sourceFMG.Entries)  //Each entry in the current FMG file
+                    foreach (var item in sourceFMG.Entries) //Each entry in the current FMG file
                     {
-                        //Console.WriteLine(item.ID);
-
-                        if ((item.ID > destFMG.Entries[i].ID))//Catch the count up if the entries in the destination langauge is out of place (Extra entries that shouldn't be there)
+                        //Console.WriteLine(item.ID); //Debug
+                        //Batch up dest entries if there are extras
+                        if ((item.ID > destFMG.Entries[i].ID)) //Catch the count up if the entries in the destination langauge is out of place (Extra entries that shouldn't be there)
                         {
                             while ((item.ID > destFMG.Entries[i].ID) && (i < destFMG.Entries.Count - 1))
                             {
@@ -253,10 +245,10 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                                     i++;
                             }
                         }
-
+                        //If item IDs match, check if the destination is null, then overwrite 
                         if (item.ID == destFMG.Entries[i].ID) //Overwrite all Null whitespace or empty entries in destination
                         {
-                            //Console.WriteLine(item.ID + " = true"); //debug
+                            //Console.WriteLine(item.ID + " = true"); //Debug
                             if (string.IsNullOrWhiteSpace(destFMG.Entries[i].Text))
                             {
                                 destFMG.Entries[i].Text = item.Text; 
@@ -284,11 +276,10 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                     if (iFile < destBND.Files.Count - 1)
                         iFile++;
                 }
-
             }
             //Print stats for entire BND file
             Console.WriteLine("Patched: " + new DirectoryInfo(Path.GetDirectoryName(destLang)).Name + " " + Path.GetFileName(destLang) + ": " 
-                + totalAdded + " entries added and " + entriesOverridden + " entries overwritten");
+                + totalAdded + " entries added and " + entriesOverwritten + " entries overwritten");
         }
 
         public static void MakeBackups(string lang, string[] destFilePath)
@@ -331,7 +322,6 @@ namespace FromSoft_Mod_Language_Patcher.Patcher
                 Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
                 MakeBackups(lang, destFilePath);
             }
-
         }
 
         /* Emperimental and broken file distributor
