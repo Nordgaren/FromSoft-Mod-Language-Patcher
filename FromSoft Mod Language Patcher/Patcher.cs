@@ -120,44 +120,41 @@ namespace FromSoft_Mod_Language_Patcher
 
             foreach (var file in sourceBND.Files) //For each FMG in the source BND file
             {
-                if ((Path.GetFileName(file.Name) == (Path.GetFileName(destBND.Files[iFile].Name)))) //If the file names match, update. If not, skip until they do match
+                if (file.ID == destBND.Files[iFile].ID) //If the file names match, update. If not, skip until they do match
                 {
                     FMG sourceFMG = FMG.Read(file.Bytes);
                     FMG destFMG = FMG.Read((destBND.Files[iFile]).Bytes);
+
+                    //Make a refFMG and refDict if refBND isn't null
                     FMG refFMG = null;
-                    //Debug.WriteLine(destBND.Files[iFile].Name); //Debug
-                    //Console.WriteLine(file.Name); //Debug
+                    Dictionary<int, string> refDict = null;
                     if (refBND != null)
                     {
                         refFMG = FMG.Read((refBND.Files[iRef]).Bytes);
+                        refDict = refFMG.Entries.ToDictionary(t => t.ID, t => t.Text);
+
                     }
 
+
                     //Make dictionaries out of the FMG files
-                    Dictionary<int, string> sourceDict = sourceFMG.Entries.ToDictionary(t => t.ID, t => t.Text);
+                    Dictionary<int, string> sourceDict = sourceFMG.Entries.GroupBy(x => x.ID).Select(x => x.First()).ToDictionary(x => x.ID, x => x.Text);
                     Dictionary<int, string> destDict = destFMG.Entries.ToDictionary(t => t.ID, t => t.Text);
-                    Dictionary<int, string> refDict = null;
-                    if (refFMG != null)
-                    {
-                        refDict = refFMG.Entries.ToDictionary(t => t.ID, t => t.Text);
-                    }
 
                     //Get all of the Keys that don't match
                     var newEntries = sourceDict.Keys.Except(destDict.Keys);
 
-                    //add new keys and their values to the dictionary
+                    //Add new keys and their values to the dictionary
                     foreach (var item in newEntries)
                     {
                         destDict.Add(item, sourceDict[item]);
                         totalAdded++;
                     }
                     
-                    //Make dicitonary based on comparing value of sourceDict to refDict
+                    //Make dicitonary based on comparing sourceDict to refDict
                     if (refDict != null)
                     {
                         Dictionary<int, string> diffDict = sourceDict.Except(refDict).ToDictionary(t => t.Key, t => t.Value);
 
-                        if (diffDict != null)
-                        {
                             foreach (var item in diffDict)
                             {
                                 if (item.Value != destDict[item.Key])
@@ -166,9 +163,7 @@ namespace FromSoft_Mod_Language_Patcher
                                     destDict.Add(item.Key, item.Value);
                                     entriesOverwritten++;
                                 }
-                                
                             }
-                        }
                     }
 
                     //Clear and rewrite FMG file
@@ -269,6 +264,7 @@ namespace FromSoft_Mod_Language_Patcher
                 Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
                 MakeBackups(lang, destFilePath);
             }
+
         }
-     }
+    }
 }
