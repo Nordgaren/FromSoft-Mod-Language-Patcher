@@ -76,31 +76,6 @@ namespace FromSoft_Mod_Language_Patcher
                         //Write new BND
                         destBND4.Write(file);
                     }
-                    /* Experimental file updater for missing FMG files
-                    if (sourceBND.Files.Count != destBND.Files.Count)
-                    {
-
-                        FilePatcherBND4(sourceBND, destBND, destLang);
-
-                        destBND = BND4.Read(destLang);
-
-                        int i = 0;
-
-                        Console.WriteLine(sourceBND.Files.Count);
-                        Console.WriteLine(destBND.Files.Count);
-
-                        foreach (var item in sourceBND.Files)
-                        {
-                            Console.WriteLine(item);
-                            Console.WriteLine(destBND.Files[i]);
-                            Console.ReadLine();
-
-                            if (i < destBND.Files.Count - 1)
-                                i++;
-                        }
-
-                    }
-                    */
                 }
             }
             //Let user know there are no more files to patch
@@ -212,36 +187,5 @@ namespace FromSoft_Mod_Language_Patcher
                 MakeBackups(lang, destFilePath);
             }
         }
-
-        /* Emperimental and broken file distributor
-        public static void FilePatcherBND4(BND4 sourceBND, BND4 destBND, string destLang)
-        {
-            int iFile = 0;
-
-            foreach (var item in sourceBND.Files)
-            {
-                if (item != destBND.Files[iFile])
-                {
-                    //Console.WriteLine(Path.GetFileName(item.Name));
-                    //Console.WriteLine(Path.GetDirectoryName(destBND.Files[1].Name));
-                    //Console.WriteLine(Path.GetDirectoryName(destBND.Files[1].Name) + "\\" + Path.GetFileName(item.Name));
-                    var newitem = item.Bytes;
-                    destBND.Files.Add(newitem);
-                }
-                else
-                {
-                    if (iFile < destBND.Files.Count - 1)
-                        iFile++;
-                }
-            }
-
-            foreach (var file in destBND.Files)
-            {
-                destBND.Files[iFile].Bytes = destBND.Write();
-                destBND.Write(destLang);
-            }
-
-        }
-        */
-                }
-            }
+     }
+}
