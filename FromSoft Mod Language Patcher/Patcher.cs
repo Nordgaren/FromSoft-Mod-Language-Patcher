@@ -42,13 +42,11 @@ namespace FromSoft_Mod_Language_Patcher
                 foreach (var file in destFilePath)//Patch each file in files Array
                 {
 
-                    if (BND3.Is(file))
+                    if (BND3.IsRead(file, out BND3 destBND3))
                     {
                         //Set source BND files
                         string sourceLangFiles = sourceLangDir + "\\" + Path.GetFileName(file);
                         BND3 sourceBND = BND3.Read(sourceLangFiles);
-                        //Destination for BND files
-                        BND3 destBND = BND3.Read(file);
 
                         //Debug Stuff
                         //Console.WriteLine(sourceBND.Files.Count);
@@ -56,18 +54,16 @@ namespace FromSoft_Mod_Language_Patcher
                         //Console.WriteLine(destFMG.Entries.Count + " & " + sourceFMG.Entries.Count);
 
                         //Patch BND file
-                        LangPatcher(sourceBND, destBND, file);
+                        LangPatcher(sourceBND, destBND3, file);
 
                         //Write new BND
-                        destBND.Write(file);
+                        destBND3.Write(file);
                     }
-                    else
+                    else if (BND4.IsRead(file, out BND4 destBND4))
                     {
                         //Set source BND files
                         string sourceLangFiles = sourceLangDir + "\\" + Path.GetFileName(file);
                         BND4 sourceBND = BND4.Read(sourceLangFiles);
-                        //Destination for BND files
-                        BND4 destBND = BND4.Read(file);
 
                         //Debug Stuff
                         //Console.WriteLine(sourceBND.Files.Count);
@@ -75,10 +71,10 @@ namespace FromSoft_Mod_Language_Patcher
                         //Console.WriteLine(destFMG.Entries.Count + " & " + sourceFMG.Entries.Count);
 
                         //Patch BND file
-                        LangPatcher(sourceBND, destBND, file);
+                        LangPatcher(sourceBND, destBND4, file);
 
                         //Write new BND
-                        destBND.Write(file);
+                        destBND4.Write(file);
                     }
                     /* Experimental file updater for missing FMG files
                     if (sourceBND.Files.Count != destBND.Files.Count)
