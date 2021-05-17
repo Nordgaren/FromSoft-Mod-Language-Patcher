@@ -13,8 +13,11 @@ https://github.com/Nordgaren
 
 ### Instructions
 
-Drag EXE into English folder of the game you are trying to patch and run the EXE. Hit yes.  
-I would recommend restoring backups if you made a spelling error and corrected it after using this tool.
+Drag EXE and ref into English folder of the game you are trying to patch.
+If you'd like to update existing entries, add the VANILLA English folder of your game to the ref folder (I.E. ref/ENGLISH for DS1 and ref/engus for DS3)  
+Run the EXE. 
+If you run without the reference, any entries that were null and changed will be updated, but any entries that were previously used (I.E existing items) will not.  
+I would recommend restoring backups if you made a spelling error and corrected it after using this tool.  
 
 ### Thank You
 
@@ -25,6 +28,8 @@ Meowmaritus :fatcat:
 Also Dropoff probably suggestions  
 
 ### Patch Notes  
+## V 2.0
+* Added comparison feature to overwrite changed entries by mod author
 ## V 1.2
 * Code optimizations
 * Runs much faster, now
