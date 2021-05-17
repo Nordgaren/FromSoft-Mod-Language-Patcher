@@ -26,8 +26,8 @@ I would recommend restoring backups if you are unsure of changes.
 ### Thank You
 
 NamelessHoodie for literally teaching me the basics of how to use SoulsFormats  
-TKGP for making SoulsFormats  
-thefifthmatt for suggestions  
+TKGP for making SoulsFormats and suggesting some great optimizations
+thefifthmatt for suggesting Dictionaries
 Meowmaritus :fatcat:  
 Also Dropoff probably suggestions  
 
