@@ -80,8 +80,6 @@ namespace FromSoft_Mod_Language_Patcher
                         //Write new BND
                         destBND.Write(file);
                     }
-
-
                     /* Experimental file updater for missing FMG files
                     if (sourceBND.Files.Count != destBND.Files.Count)
                     {
