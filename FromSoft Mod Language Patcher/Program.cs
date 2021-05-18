@@ -6,7 +6,6 @@ namespace FromSoft_Mod_Language_Patcher
 {
     class Program
     {
-
         public static bool restoreBackups = false;
 
         static void Main(string[] args)
@@ -34,7 +33,6 @@ namespace FromSoft_Mod_Language_Patcher
             else
             {
                 Console.WriteLine("Closing without patching...");
-                Console.WriteLine("Press ENTER...");
             }
             Console.WriteLine("Press ENTER...");
             Console.ReadLine();
