@@ -35,7 +35,7 @@ namespace FromSoft_Mod_Language_Patcher
                 noRef = true;
             }
 
-            Console.WriteLine("Patching..."); 
+            Console.WriteLine("Patching...");
             foreach (var lang in destLangPath) //For each language
             {
                 //Get Destination Files
@@ -47,11 +47,11 @@ namespace FromSoft_Mod_Language_Patcher
                 }
                 else //Make backups
                 {
-                    Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
+                    Console.WriteLine($"Backing up { new DirectoryInfo(lang).Name }");
                     MakeBackups(lang, destFilePath);
                 }
 
-                Console.WriteLine("Patching " + new DirectoryInfo(lang).Name);
+                Console.WriteLine($"Patching { new DirectoryInfo(lang).Name }");
 
                 foreach (var file in destFilePath)//Patch each file in files Array
                 {
@@ -111,7 +111,7 @@ namespace FromSoft_Mod_Language_Patcher
             Console.WriteLine("Patching completed!");
         }
 
-        public static void LangPatcher(IBinder sourceBND,IBinder destBND, IBinder refBND, string destLang)
+        public static void LangPatcher(IBinder sourceBND, IBinder destBND, IBinder refBND, string destLang)
         {
             int iFile = 0; //File counter
             int iRef = 0; //Reference index counter
@@ -158,7 +158,7 @@ namespace FromSoft_Mod_Language_Patcher
                         destDict.Add(item, sourceDict[item]);
                         totalAdded++;
                     }
-                    
+
                     //Make dicitonary based on comparing sourceDict to refDict
                     if (refDict != null)
                     {
@@ -168,9 +168,9 @@ namespace FromSoft_Mod_Language_Patcher
                         {
                             if (item.Value != destDict[item.Key])
                             {
-                                   destDict.Remove(item.Key);
-                                   destDict.Add(item.Key, item.Value);
-                                   entriesOverwritten++;
+                                destDict.Remove(item.Key);
+                                destDict.Add(item.Key, item.Value);
+                                entriesOverwritten++;
                             }
                         }
                     }
@@ -220,7 +220,6 @@ namespace FromSoft_Mod_Language_Patcher
                     //    Console.WriteLine(entry);
                     //} 
                     #endregion
-
                     //Write the new files
                     destBND.Files[iFile].Bytes = destFMG.Write();
                     //Add to counter if it's not already maxed
@@ -236,13 +235,12 @@ namespace FromSoft_Mod_Language_Patcher
                 iRef++;
             }
             //Print stats for entire BND file
-            Console.WriteLine("Patched: " + new DirectoryInfo(Path.GetDirectoryName(destLang)).Name + " " + Path.GetFileName(destLang) + ": "
-                + totalAdded + " entries added and " + entriesOverwritten + " entries overwritten");
+            Console.WriteLine($"Patched: { new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) }: { totalAdded } entries added and { entriesOverwritten } entries overwritten");
         }
 
         public static void MakeBackups(string lang, string[] destFilePath)
         {
-            //Make Backups
+            //Make backups
             foreach (var thing in destFilePath)
             {
                 //Make backups if the files aren't already backed up
@@ -256,8 +254,8 @@ namespace FromSoft_Mod_Language_Patcher
 
         public static void RestoreBackups(string lang, string[] destFilePath)
         {
-            //Make Backups
-            Console.WriteLine("Attempting to restore backups " + new DirectoryInfo(lang).Name);
+            //Attempt to restore backups
+            Console.WriteLine($"Attempting to restore backups { new DirectoryInfo(lang).Name }");
             int backupsRestored = 0;
 
             foreach (var thing in destFilePath)
@@ -272,12 +270,12 @@ namespace FromSoft_Mod_Language_Patcher
 
             if (backupsRestored > 0) //Print how many backups were restored
             {
-                Console.WriteLine(backupsRestored + " Backups restored");
+                Console.WriteLine($"{ backupsRestored } Backups restored");
             }
             else //If no backups restored, make backups
             {
                 Console.WriteLine("Backups not present");
-                Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
+                Console.WriteLine($"Backing up { new DirectoryInfo(lang).Name }");
                 MakeBackups(lang, destFilePath);
             }
         }

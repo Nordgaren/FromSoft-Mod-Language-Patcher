@@ -46,13 +46,13 @@ namespace FromSoft_Mod_Language_Patcher
             string version = fvi.FileVersion;
 
             //Intro text
-            Console.WriteLine("Welcome to FromSoft Mod Language Patcher v" + version + " by Nordgaren");
+            Console.WriteLine($"Welcome to FromSoft Mod Language Patcher v { version } by Nordgaren");
             Console.WriteLine("Please contact me on GitHub with any bugs!");
             Console.WriteLine("https://github.com/Nordgaren/");
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("If this your first time using this program, your language files WILL be backed up");
-            Console.WriteLine("Detected source Language: " + sourceLang);
+            Console.WriteLine($"Detected source Language: { sourceLang }");
         }
 
         public static bool Confirm(string title)
