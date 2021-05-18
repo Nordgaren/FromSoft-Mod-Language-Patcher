@@ -36,6 +36,7 @@ namespace FromSoft_Mod_Language_Patcher
                 Console.WriteLine("Closing without patching...");
                 Console.WriteLine("Press ENTER...");
             }
+            Console.WriteLine("Press ENTER...");
             Console.ReadLine();
         }
 

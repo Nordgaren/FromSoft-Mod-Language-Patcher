@@ -9,21 +9,20 @@ namespace FromSoft_Mod_Language_Patcher
 {
     class Patcher
     {
-
         static bool noRef = false;
 
         public static void Patch(string sourceLangDir, string sourceLang)
         {
-
             //Get Destination Languages and ref directory
             var destLangPath = Directory.GetDirectories(Path.GetDirectoryName(sourceLangDir), "*.*", SearchOption.TopDirectoryOnly).Where(d => !d.EndsWith(sourceLang)).ToArray();
             string refLangDir = Directory.GetCurrentDirectory() + @"\ref\" + sourceLang;
 
-            //Debug Stuff
+            #region Debug Stuff
             //foreach (var lang in destFilePath)
             //{
             //    Console.WriteLine(Path.GetFileName(lang));
             //}
+            #endregion
             //Check if refernce exists
             if (Directory.Exists(refLangDir))
             {
@@ -36,8 +35,7 @@ namespace FromSoft_Mod_Language_Patcher
                 noRef = true;
             }
 
-            Console.WriteLine("Patching...");
-
+            Console.WriteLine("Patching..."); 
             foreach (var lang in destLangPath) //For each language
             {
                 //Get Destination Files
@@ -70,10 +68,11 @@ namespace FromSoft_Mod_Language_Patcher
                             refBND = BND3.Read(refLangFiles);
                         }
 
-                        //Debug Stuff
+                        #region Debug Stuff
                         //Console.WriteLine(sourceBND.Files.Count);
                         //Debug.WriteLine(Path.GetFileName(sourceBND.Files[0].Name));
-                        //Console.WriteLine(destFMG.Entries.Count + " & " + sourceFMG.Entries.Count);
+                        //Console.WriteLine(destFMG.Entries.Count + " & " + sourceFMG.Entries.Count); 
+                        #endregion
 
                         //Patch BND file
                         LangPatcher(sourceBND, destBND3, refBND, file);
@@ -94,10 +93,11 @@ namespace FromSoft_Mod_Language_Patcher
                             refBND = BND4.Read(refLangFiles);
                         }
 
-                        //Debug Stuff
+                        #region Debug Stuff
                         //Console.WriteLine(sourceBND.Files.Count);
                         //Debug.WriteLine(Path.GetFileName(sourceBND.Files[0].Name));
-                        //Console.WriteLine(destFMG.Entries.Count + " & " + sourceFMG.Entries.Count);
+                        //Console.WriteLine(destFMG.Entries.Count + " & " + sourceFMG.Entries.Count); 
+                        #endregion
 
                         //Patch BND file
                         LangPatcher(sourceBND, destBND4, refBND, file);
@@ -120,8 +120,19 @@ namespace FromSoft_Mod_Language_Patcher
 
             foreach (var file in sourceBND.Files) //For each FMG in the source BND file
             {
+                if (file.ID > destBND.Files[iFile].ID)
+                {
+                    while ((file.ID > destBND.Files[iFile].ID) && (iFile < destBND.Files.Count - 1))
+                    {
+                        //Console.WriteLine("Skipped " + destBND.Files[iFile].ID); //Debug
+                        if (iFile < destBND.Files.Count - 1)
+                            iFile++;
+                    }
+                }
+
                 if (file.ID == destBND.Files[iFile].ID) //If the file names match, update. If not, skip until they do match
                 {
+                    //Console.WriteLine(file.ID + " = true"); // Debug
                     FMG sourceFMG = FMG.Read(file.Bytes);
                     FMG destFMG = FMG.Read((destBND.Files[iFile]).Bytes);
 
@@ -132,13 +143,11 @@ namespace FromSoft_Mod_Language_Patcher
                     {
                         refFMG = FMG.Read((refBND.Files[iRef]).Bytes);
                         refDict = refFMG.Entries.ToDictionary(t => t.ID, t => t.Text);
-
                     }
-
 
                     //Make dictionaries out of the FMG files
                     Dictionary<int, string> sourceDict = sourceFMG.Entries.GroupBy(x => x.ID).Select(x => x.First()).ToDictionary(x => x.ID, x => x.Text);
-                    Dictionary<int, string> destDict = destFMG.Entries.ToDictionary(t => t.ID, t => t.Text);
+                    Dictionary<int, string> destDict = destFMG.Entries.GroupBy(x => x.ID).Select(x => x.First()).ToDictionary(x => x.ID, x => x.Text);
 
                     //Get all of the Keys that don't match
                     var newEntries = sourceDict.Keys.Except(destDict.Keys);
@@ -155,15 +164,15 @@ namespace FromSoft_Mod_Language_Patcher
                     {
                         Dictionary<int, string> diffDict = sourceDict.Except(refDict).ToDictionary(t => t.Key, t => t.Value);
 
-                            foreach (var item in diffDict)
+                        foreach (var item in diffDict)
+                        {
+                            if (item.Value != destDict[item.Key])
                             {
-                                if (item.Value != destDict[item.Key])
-                                {
-                                    destDict.Remove(item.Key);
-                                    destDict.Add(item.Key, item.Value);
-                                    entriesOverwritten++;
-                                }
+                                   destDict.Remove(item.Key);
+                                   destDict.Add(item.Key, item.Value);
+                                   entriesOverwritten++;
                             }
+                        }
                     }
 
                     //Clear and rewrite FMG file
@@ -205,11 +214,12 @@ namespace FromSoft_Mod_Language_Patcher
                             }
                         }
                     }
-                    //Debug stuff
+                    #region Debug Stuff
                     //foreach (var entry in destFMG.Entries)
                     //{
                     //    Console.WriteLine(entry);
-                    //}
+                    //} 
+                    #endregion
 
                     //Write the new files
                     destBND.Files[iFile].Bytes = destFMG.Write();
@@ -217,6 +227,12 @@ namespace FromSoft_Mod_Language_Patcher
                     if (iFile < destBND.Files.Count - 1)
                         iFile++;
                 }
+                #region Debug Stuff
+                //else //Debug
+                //{
+                //    Console.WriteLine(file.ID + " = false");
+                //} 
+                #endregion
                 iRef++;
             }
             //Print stats for entire BND file
@@ -264,7 +280,6 @@ namespace FromSoft_Mod_Language_Patcher
                 Console.WriteLine("Backing up " + new DirectoryInfo(lang).Name);
                 MakeBackups(lang, destFilePath);
             }
-
         }
     }
 }
