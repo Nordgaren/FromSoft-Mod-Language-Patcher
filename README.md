@@ -14,7 +14,6 @@ Dependencies packaged into EXE by [Costrua.Fody](https://www.nuget.org/packages/
 If you would like to help me test any other FromSoft game that isn't on the list, please contact me through GitHub  
 https://github.com/Nordgaren
 
-
 ### Instructions
 
 1) Drag EXE into English folder of the game you are trying to patch.
