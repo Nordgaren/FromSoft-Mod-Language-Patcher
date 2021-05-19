@@ -31,12 +31,12 @@ I also recommend you don't delete the backup files!
 
 ### Thank You
 
-NamelessHoodie for literally teaching me the basics of how to use SoulsFormats  
-TKGP for making SoulsFormats and suggesting some great optimizations
-thefifthmatt for suggesting Dictionaries
-geeeeeorge for helping me figure out FMG IDs
-Meowmaritus :fatcat:  
-Also Dropoff probably suggestions  
+**NamelessHoodie** for literally teaching me the basics of how to use SoulsFormats  
+**TKGP** for making SoulsFormats and suggesting some great optimizations  
+**thefifthmatt** for suggesting Dictionaries  
+**geeeeeorge** for helping me figure out FMG IDs  
+**Meowmaritus** :fatcat:  
+**Dropoff** bruh  
 
 ### Patch Notes  
 ## V 2.2
