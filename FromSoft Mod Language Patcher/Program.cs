@@ -18,17 +18,8 @@ namespace FromSoft_Mod_Language_Patcher
             //Ask if the user would like to actually patch
             if (Confirm("Would you like to patch the other language files?"))
             {
-                //Ask if user would like to restore backups
-                if (Confirm("Would you like to restore backups, first?"))
-                {
-                    restoreBackups = true;
-                    Patcher.Patch(sourceLangDir, sourceLang);
-                }
-                else
-                {
-                    restoreBackups = false;
-                    Patcher.Patch(sourceLangDir, sourceLang);
-                }
+                restoreBackups = Confirm("Would you like to restore backups, first?");
+                Patcher.Patch(sourceLangDir, sourceLang);
             }
             else
             {

@@ -38,9 +38,11 @@ Meowmaritus :fatcat:
 Also Dropoff probably suggestions  
 
 ### Patch Notes  
+## V 2.2
+* Now asks if you want to skip overwrites if you have no reference folder
 ## V 2.1
 * Should now be compatible with custom file names for mods
-* Ignores duplicate entries
+* Ignores duplicate entries in source FMGs
 ## V 2.0
 * Added comparison feature to overwrite changed entries by mod author
 ## V 1.2
