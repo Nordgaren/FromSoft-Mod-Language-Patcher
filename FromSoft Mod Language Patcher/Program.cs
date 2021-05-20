@@ -6,7 +6,9 @@ namespace FromSoft_Mod_Language_Patcher
 {
     class Program
     {
-        public static bool restoreBackups = false;
+        public static bool restoreBackups { get; internal set; }
+
+        public static bool LogEntries { get; internal set; }
 
         static void Main(string[] args)
         {
@@ -14,6 +16,8 @@ namespace FromSoft_Mod_Language_Patcher
             string sourceLangDir = Directory.GetCurrentDirectory();
             string sourceLang = new DirectoryInfo(sourceLangDir).Name;
             StartUp(sourceLang);
+
+            File.Delete($@"{ sourceLangDir }\LangPatchLog.txt");
 
             //Ask if the user would like to actually patch
             if (Confirm("Would you like to patch the other language files?"))
@@ -40,8 +44,8 @@ namespace FromSoft_Mod_Language_Patcher
             Console.WriteLine($"Welcome to FromSoft Mod Language Patcher v { version } by Nordgaren");
             Console.WriteLine("Please contact me on GitHub with any bugs!");
             Console.WriteLine("https://github.com/Nordgaren/");
-            Console.WriteLine();
-            Console.WriteLine();
+            Console.WriteLine("");
+            Console.WriteLine("");
             Console.WriteLine("If this your first time using this program, your language files WILL be backed up");
             Console.WriteLine($"Detected source Language: { sourceLang }");
         }

@@ -39,6 +39,8 @@ Meowmaritus :fatcat:
 Also Dropoff probably suggestions  
 
 ### Patch Notes  
+## V 2.3
+* Added log file with added and changed items which will provide more feedback to the user
 ## V 2.2
 * Now asks if you want to skip overwrites if you have no reference folder
 ## V 2.1
