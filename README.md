@@ -2,7 +2,7 @@
 This is a tool that patches the languages for FromSoft mods. 
 Moves all new entries from English FMG files to other languages.  
 Will also overwrite all changed entries with a reference file, provided by you (vanilla version of the BND you changed)  
-If DON'T provide a reference file, the program will overwrite all nulls (so any nulls that's ere changed to use in the mod WILL get changed) (There is an option to cancel overwrites at startut if you have not reference file)
+If DON'T provide a reference file, the program will overwrite all nulls (so any nulls that's ere changed to use in the mod WILL get changed). There is an option to cancel overwrites at startut if you have not reference file
 
 It uses [SoulsFormats](https://github.com/JKAnderson/SoulsFormats) by JK Anderson  
 Dependencies packaged into EXE by [Costrua.Fody](https://www.nuget.org/packages/Costura.Fody/) NuGet
