@@ -359,11 +359,10 @@ namespace FromSoft_Mod_Language_Patcher
 
         public static void ConsoleLog(string message)
         {
-
-            using (StreamWriter w = File.AppendText($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt"))
+            Console.WriteLine(message);
+            using (StreamWriter sw = File.AppendText($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt"))
             {
-                Console.WriteLine(message);
-                w.WriteLine(message);
+                sw.WriteLine(message);
             }
         }
     }
