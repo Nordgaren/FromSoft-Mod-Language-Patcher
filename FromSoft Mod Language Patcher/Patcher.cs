@@ -202,7 +202,7 @@ namespace FromSoft_Mod_Language_Patcher
             ConsoleLog($"Patched: { new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) }: { entriesAdded } entries added and { entriesOverwritten } entries overwritten");
 
             //Append log file
-            Log.Add($"Finished Patching { new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) }");
+            Log.Add($"{ new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) } end");
             File.AppendAllLines($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt", Log);
             Log.Clear();
         }
