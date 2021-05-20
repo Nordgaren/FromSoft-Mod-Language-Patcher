@@ -10,8 +10,6 @@ namespace FromSoft_Mod_Language_Patcher
     {
         private static bool NoRef { get; set; }
 
-        public static List<string> ListLog { get; set; }
-
         public static void Patch(string sourceLangDir, string sourceLang)
         {
             //Get Destination Languages and ref directory
@@ -23,6 +21,9 @@ namespace FromSoft_Mod_Language_Patcher
             //    ConsoleLog(Path.GetFileName(lang));
             //}
             #endregion
+
+            File.Delete($@"{ sourceLangDir }\LangPatchLog.txt");
+
             //Check if reference directory exists and set bool NoRef
             CheckRefDir(refLangDir);
 
@@ -32,7 +33,7 @@ namespace FromSoft_Mod_Language_Patcher
                 //Get Destination Files
                 var destFilePath = Directory.GetFiles(lang).Where(name => !name.EndsWith(".bak")).ToArray();
                 //Check if user wanted to restore backups
-                if (Program.restoreBackups) //Attempt to restore backups
+                if (Program.RestoreBackups) //Attempt to restore backups
                 {
                     RestoreBackups(lang, destFilePath);
                 }
@@ -43,7 +44,7 @@ namespace FromSoft_Mod_Language_Patcher
                 //Write the language being patched and patch BND
                 ConsoleLog($"Patching { new DirectoryInfo(lang).Name }");
                 PatchBND(sourceLangDir, refLangDir, destFilePath);
-                Log($"Finished Patching { new DirectoryInfo(lang).Name }");
+                ConsoleLog($"Patching { new DirectoryInfo(lang).Name } Complete");
             }
             //Let user know there are no more files to patch
             ConsoleLog("Patching completed!");
@@ -120,16 +121,16 @@ namespace FromSoft_Mod_Language_Patcher
             }
         }
 
+        private static List<string> Log = new List<string>();
+
         private static void PatchFMG(IBinder sourceBND, IBinder destBND, IBinder refBND, string destLang)
         {
             int iFile = 0; //File counter
             int iRef = 0; //Reference index counter
             int entriesAdded = 0; //Total added per file
             int entriesOverwritten = 0; //Total overwritten per file
-            ListLog = new List<string>
-            {
-                Path.GetFileName($"{ destLang } start")
-            };
+
+            Log.Add($"{ new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) } start");  
 
             foreach (var file in sourceBND.Files) //For each FMG in the source BND file
             {
@@ -145,7 +146,8 @@ namespace FromSoft_Mod_Language_Patcher
 
                 if (file.ID == destBND.Files[iFile].ID) //If the file names match, update. If not, skip until they do match
                 {
-                    ListLog.Add($"{ Path.GetFileName(destBND.Files[iFile].Name) } / { Path.GetFileName(file.Name) }");
+                    //Add the source and destination FMG
+                    Log.Add($"Destination: { Path.GetFileName(destBND.Files[iFile].Name) } / Source: { Path.GetFileName(file.Name) }");
                     //ConsoleLog(file.ID + " = true"); // Debug
                     FMG sourceFMG = FMG.Read(file.Bytes);
                     FMG destFMG = FMG.Read((destBND.Files[iFile]).Bytes);
@@ -171,7 +173,7 @@ namespace FromSoft_Mod_Language_Patcher
                     //Replace old null entries if no reference.
                     if (NoRef)
                     {
-                        ListLog.Add("Changed:");
+                        Log.Add("Changed:");
                         entriesOverwritten = NullOverwrite(entriesOverwritten, sourceFMG, destFMG);
                     }
 
@@ -196,11 +198,13 @@ namespace FromSoft_Mod_Language_Patcher
                 #endregion
                 iRef++;
             }
-
-            if (ListLog != null)
-                File.AppendAllLines($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt", ListLog);
             //Print stats for entire BND file
             ConsoleLog($"Patched: { new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) }: { entriesAdded } entries added and { entriesOverwritten } entries overwritten");
+
+            //Append log file
+            Log.Add($"Finished Patching { new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) }");
+            File.AppendAllLines($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt", Log);
+            Log.Clear();
         }
 
         private static Dictionary<int, string> MakeRef(IBinder refBND, int iRef)
@@ -222,13 +226,13 @@ namespace FromSoft_Mod_Language_Patcher
             var newEntries = sourceDict.Keys.Except(destDict.Keys);
 
             if (newEntries.Count() > 0)
-                ListLog.Add("Added");
+                Log.Add("Added");
 
             //Add new keys and their values to the dictionary
             foreach (var item in newEntries)
             {
                 destDict.Add(item, sourceDict[item]);
-                ListLog.Add($"{ item }: { sourceDict[item]}");
+                Log.Add($"{ item }: { sourceDict[item]}");
                 entriesAdded++;
             }
 
@@ -240,13 +244,13 @@ namespace FromSoft_Mod_Language_Patcher
             var diffDict = sourceDict.Except(refDict);
 
             if (diffDict.Count() > 0)
-                ListLog.Add("Changed:");
+                Log.Add("Changed:");
 
             foreach (var item in diffDict)
             {
                 if (item.Value != destDict[item.Key])
                 {
-                    ListLog.Add($"{ item.Key }: { destDict[item.Key] } to { item.Value }");
+                    Log.Add($"{ item.Key }: { destDict[item.Key] } to { item.Value }");
                     //ConsoleLog($" before | { destDict[item.Key] } |"); // Debug see changes
                     destDict[item.Key] = item.Value;
                     entriesOverwritten++;
@@ -282,7 +286,7 @@ namespace FromSoft_Mod_Language_Patcher
 
                         if (!string.IsNullOrWhiteSpace(destFMG.Entries[i].Text)) //Keep track of entries that actually changed
                         {
-                            ListLog.Add($"{ destFMG.Entries[i].ID }: { destFMG.Entries[i].Text }");
+                            Log.Add($"{ destFMG.Entries[i].ID }: { destFMG.Entries[i].Text }");
                             entriesOverwritten++;
                         }
                         //Debug.WriteLine("writing " + destFMG.Entries[i].Text + " to " + destFMG.Entries[i].ID + " in " + Path.GetFileName(sourceBND.Files[iFile].Name));
@@ -350,16 +354,6 @@ namespace FromSoft_Mod_Language_Patcher
             {
                 ConsoleLog("Backups not present");
                 MakeBackups(lang, destFilePath);
-            }
-        }
-
-        private static void Log(string message)
-        {
-            string log = $@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt";
-
-            using (StreamWriter w = File.AppendText(log))
-            {
-                w.WriteLine(message);
             }
         }
 

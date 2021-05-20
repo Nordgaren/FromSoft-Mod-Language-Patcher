@@ -6,9 +6,7 @@ namespace FromSoft_Mod_Language_Patcher
 {
     class Program
     {
-        public static bool restoreBackups { get; internal set; }
-
-        public static bool LogEntries { get; internal set; }
+        public static bool RestoreBackups { get; internal set; }
 
         static void Main(string[] args)
         {
@@ -17,12 +15,11 @@ namespace FromSoft_Mod_Language_Patcher
             string sourceLang = new DirectoryInfo(sourceLangDir).Name;
             StartUp(sourceLang);
 
-            File.Delete($@"{ sourceLangDir }\LangPatchLog.txt");
 
             //Ask if the user would like to actually patch
             if (Confirm("Would you like to patch the other language files?"))
             {
-                restoreBackups = Confirm("Would you like to restore backups, first?");
+                RestoreBackups = Confirm("Would you like to restore backups, first?");
                 Patcher.Patch(sourceLangDir, sourceLang);
             }
             else
