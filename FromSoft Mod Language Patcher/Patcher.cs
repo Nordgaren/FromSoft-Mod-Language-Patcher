@@ -130,7 +130,7 @@ namespace FromSoft_Mod_Language_Patcher
             int entriesAdded = 0; //Total added per file
             int entriesOverwritten = 0; //Total overwritten per file
 
-            Log.Add($"{ new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) } start"); //Write the Language and Name of file being patched
+            Log.Add($"{ new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) } start");  
 
             foreach (var file in sourceBND.Files) //For each FMG in the source BND file
             {
@@ -152,15 +152,20 @@ namespace FromSoft_Mod_Language_Patcher
                     FMG sourceFMG = FMG.Read(file.Bytes);
                     FMG destFMG = FMG.Read((destBND.Files[iFile]).Bytes);
 
+                    //Make a refFMG and refDict if refBND isn't null
+                    Dictionary<int, string> refDict = MakeRef(refBND, iRef);
+
                     //Make dictionaries out of the FMG files
                     Dictionary<int, string> sourceDict = sourceFMG.Entries.GroupBy(x => x.ID).Select(x => x.First()).ToDictionary(x => x.ID, x => x.Text);
                     Dictionary<int, string> destDict = destFMG.Entries.GroupBy(x => x.ID).Select(x => x.First()).ToDictionary(x => x.ID, x => x.Text);
 
-                    //Make a refFMG and refDict if refBND isn't null
-                    Dictionary<int, string> refDict = MakeRef(refBND, iRef);
+                    entriesAdded = AddNew(entriesAdded, sourceDict, destDict);
 
-                    //Add all new entries and update ones that changed.
-                    AddUpdateFMG(ref entriesAdded, ref entriesOverwritten, refDict, sourceDict, destDict);
+                    //Make dicitonary based on comparing sourceDict to refDict
+                    if (refDict != null)
+                    {
+                        entriesOverwritten = UpdateText(entriesOverwritten, refDict, sourceDict, destDict);
+                    }
 
                     //Clear and rewrite FMG file
                     RewriteFMG(destFMG, destDict);
@@ -197,9 +202,9 @@ namespace FromSoft_Mod_Language_Patcher
             ConsoleLog($"Patched: { new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) }: { entriesAdded } entries added and { entriesOverwritten } entries overwritten");
 
             //Append log file
-            Log.Add($"{ new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) } end"); //Write the Language and Name of file being patched
-            File.AppendAllLines($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt", Log); //Write the list to log file
-            Log.Clear(); //Clear for next pass
+            Log.Add($"{ new DirectoryInfo(Path.GetDirectoryName(destLang)).Name } { Path.GetFileName(destLang) } end");
+            File.AppendAllLines($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt", Log);
+            Log.Clear();
         }
 
         private static Dictionary<int, string> MakeRef(IBinder refBND, int iRef)
@@ -211,33 +216,49 @@ namespace FromSoft_Mod_Language_Patcher
                 refFMG = FMG.Read((refBND.Files[iRef]).Bytes);
                 refDict = refFMG.Entries.ToDictionary(t => t.ID, t => t.Text);
             }
+
             return refDict;
         }
 
-        private static void AddUpdateFMG(ref int entriesAdded, ref int entriesOverwritten, Dictionary<int, string> refDict, Dictionary<int, string> sourceDict, Dictionary<int, string> destDict)
+        private static int AddNew(int entriesAdded, Dictionary<int, string> sourceDict, Dictionary<int, string> destDict)
         {
-            var diffDict = sourceDict.Except(refDict); //Get all entriest except the ones that are present in the reference (Comparest key and value)
+            //Get all of the Keys that don't match
+            var newEntries = sourceDict.Keys.Except(destDict.Keys);
+
+            if (newEntries.Count() > 0)
+                Log.Add("Added");
+
+            //Add new keys and their values to the dictionary
+            foreach (var item in newEntries)
+            {
+                destDict.Add(item, sourceDict[item]);
+                Log.Add($"{ item }: { sourceDict[item]}");
+                entriesAdded++;
+            }
+
+            return entriesAdded;
+        }
+
+        private static int UpdateText(int entriesOverwritten, Dictionary<int, string> refDict, Dictionary<int, string> sourceDict, Dictionary<int, string> destDict)
+        {
+            var diffDict = sourceDict.Except(refDict);
+
+            if (diffDict.Count() > 0)
+                Log.Add("Changed:");
 
             foreach (var item in diffDict)
             {
-                if (!destDict.ContainsKey(item.Key))
+                if (item.Value != destDict[item.Key])
                 {
-                    destDict.Add(item.Key, sourceDict[item.Key]);
-                    Log.Add($"Added: { item.Key }: { sourceDict[item.Key]}");
-                    entriesAdded++;
-                }
-                else if (item.Value != destDict[item.Key])
-                {
-                    //ConsoleLog($" before | { destDict[item.Key] } |"); // Debug see change
-
-                    //Add change to log, before and after
-                    Log.Add($"Changed: { item.Key }: { destDict[item.Key] } to { item.Value }");
+                    Log.Add($"{ item.Key }: { destDict[item.Key] } to { item.Value }");
+                    //ConsoleLog($" before | { destDict[item.Key] } |"); // Debug see changes
                     destDict[item.Key] = item.Value;
                     entriesOverwritten++;
-
-                    //ConsoleLog($" after  |{ destDict[item.Key] }|"); //Debug see change
+                    //ConsoleLog($" after  |{ destDict[item.Key] }|"); //Debug see changes
                 }
             }
+
+            return entriesOverwritten;
         }
 
         private static int NullOverwrite(int entriesOverwritten, FMG sourceFMG, FMG destFMG)
@@ -274,6 +295,7 @@ namespace FromSoft_Mod_Language_Patcher
                         i++;
                 }
             }
+
             return entriesOverwritten;
         }
 
@@ -338,7 +360,10 @@ namespace FromSoft_Mod_Language_Patcher
         public static void ConsoleLog(string message)
         {
             Console.WriteLine(message);
-            Log.Add(message);
+            using (StreamWriter sw = File.AppendText($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt"))
+            {
+                sw.WriteLine(message);
+            }
         }
     }
 }

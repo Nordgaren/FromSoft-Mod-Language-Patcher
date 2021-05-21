@@ -24,9 +24,9 @@ namespace FromSoft_Mod_Language_Patcher
             }
             else
             {
-                Patcher.ConsoleLog("Closing without patching...");
+                Console.WriteLine("Closing without patching...");
             }
-            Patcher.ConsoleLog("Press ENTER...");
+            Console.WriteLine("Press ENTER...");
             Console.ReadLine();
         }
 
@@ -44,7 +44,7 @@ namespace FromSoft_Mod_Language_Patcher
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("If this your first time using this program, your language files WILL be backed up");
-            Patcher.ConsoleLog($"Detected source Language: { sourceLang }");
+            Console.WriteLine($"Detected source Language: { sourceLang }");
         }
 
         public static bool Confirm(string title)
