@@ -33,12 +33,10 @@ namespace FromSoft_Mod_Language_Patcher
         public static void StartUp(string sourceLang)
         {
             //Get version number
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = fvi.FileVersion;
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
 
             //Intro text
-            Console.WriteLine($"Welcome to FromSoft Mod Language Patcher v { version } by Nordgaren");
+            Console.WriteLine($"Welcome to FromSoft Mod Language Patcher v { fvi.FileVersion } by Nordgaren");
             Console.WriteLine("Please contact me on GitHub with any bugs!");
             Console.WriteLine("https://github.com/Nordgaren/");
             Console.WriteLine("");

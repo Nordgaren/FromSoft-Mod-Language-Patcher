@@ -360,10 +360,7 @@ namespace FromSoft_Mod_Language_Patcher
         public static void ConsoleLog(string message)
         {
             Console.WriteLine(message);
-            using (StreamWriter sw = File.AppendText($@"{ Directory.GetCurrentDirectory() }\LangPatchLog.txt"))
-            {
-                sw.WriteLine(message);
-            }
+            Log.Add(message);
         }
     }
 }
