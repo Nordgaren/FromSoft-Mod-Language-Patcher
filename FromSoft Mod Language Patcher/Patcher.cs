@@ -152,14 +152,14 @@ namespace FromSoft_Mod_Language_Patcher
                     FMG sourceFMG = FMG.Read(file.Bytes);
                     FMG destFMG = FMG.Read((destBND.Files[iFile]).Bytes);
 
-                    //Make a refFMG and refDict if refBND isn't null
-                    Dictionary<int, string> refDict = MakeRef(refBND, iRef);
-
                     //Make dictionaries out of the FMG files
                     Dictionary<int, string> sourceDict = sourceFMG.Entries.GroupBy(x => x.ID).Select(x => x.First()).ToDictionary(x => x.ID, x => x.Text);
                     Dictionary<int, string> destDict = destFMG.Entries.GroupBy(x => x.ID).Select(x => x.First()).ToDictionary(x => x.ID, x => x.Text);
 
                     entriesAdded = AddNew(entriesAdded, sourceDict, destDict);
+
+                    //Make a refFMG and refDict if refBND isn't null
+                    Dictionary<int, string> refDict = MakeRef(refBND, iRef);
 
                     //Make dicitonary based on comparing sourceDict to refDict
                     if (refDict != null)
