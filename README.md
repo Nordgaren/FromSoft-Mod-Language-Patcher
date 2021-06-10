@@ -19,7 +19,7 @@ https://github.com/Nordgaren
 
 1) Drag EXE into English folder of the game you are trying to patch.
 
-2) (optional)If you'd like to update existing entries, make a folder named ref inside the foler with the EXE and add the VANILLA English folder of your game to the ref folder (I.E. ref/ENGLISH for DS1 and ref/engus for DS3)  
+2) (recommended)If you'd like to update existing entries, make a folder named ref inside the foler with the EXE and add the VANILLA English folder (with files inside) of your game to the ref folder (I.E. ref/ENGLISH for DS1 and ref/engus for DS3)  
 
 3) Run the EXE. 
 
