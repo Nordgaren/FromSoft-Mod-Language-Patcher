@@ -144,7 +144,7 @@ namespace FromSoft_Mod_Language_Patcher
                     }
                 }
 
-                if (file.ID == destBND.Files[iFile].ID) //If the file names match, update. If not, skip until they do match
+                if (file.ID == destBND.Files[iFile].ID) //If the file IDs match, update. If not, skip until they do match
                 {
                     //Add the source and destination FMG
                     Log.Add($"Destination: { Path.GetFileName(destBND.Files[iFile].Name) } / Source: { Path.GetFileName(file.Name) }");
