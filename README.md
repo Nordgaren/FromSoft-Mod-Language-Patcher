@@ -19,8 +19,7 @@ https://github.com/Nordgaren
 
 1) Drag EXE into English folder of the game you are trying to patch.
 
-2) ***Recommended*** - If you'd like to update existing entries, make a folder named ref inside the foler with the EXE and add the VANILLA English folder (with files inside) of your game to the ref folder (I.E. ref/ENGLISH for DS1 and ref/engus for DS3)  
-    * [Source Language Directory Example](https://github.com/Nordgaren/FromSoft-Mod-Language-Patcher/blob/main/Folder%20example.png)  
+2) ***Recommended*** - If you'd like to update existing entries, make a folder named ref inside the foler with the EXE and add the VANILLA English folder (with files inside) of your game to the ref folder (I.E. ref/ENGLISH for DS1 and ref/engus for DS3) 
     * [Reference Directory Example](https://github.com/Nordgaren/FromSoft-Mod-Language-Patcher/blob/main/Folder%20example%20Ref%20Directory.png)
 
 3) Run the EXE. 
